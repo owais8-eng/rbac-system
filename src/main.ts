@@ -20,7 +20,9 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('RBAC System API')
-    .setDescription('Role-Based Access Control system with NestJS')
+    .setDescription(`
+Role-Based Access Control system built with NestJS, PostgreSQL, and Prisma.
+`)
     .setVersion('1.0')
     .addBearerAuth(
       { type: 'http', scheme: 'bearer', bearerFormat: 'JWT', in: 'header' },

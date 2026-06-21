@@ -22,25 +22,31 @@ export class RolesController {
 
   @Post()
   @RequirePermissions('manage:roles')
-  @ApiOperation({ summary: 'Create a new role' })
+  @ApiOperation({ summary: 'Create role', description: 'Create a new role. Requires `manage:roles` permission.' })
   @ApiResponse({ status: 201, description: 'Role created' })
-  @ApiResponse({ status: 400, description: 'Validation error' })
+  @ApiResponse({ status: 400, description: 'Validation error or duplicate name' })
+  @ApiResponse({ status: 401, description: 'Missing or invalid access token' })
+  @ApiResponse({ status: 403, description: 'Missing required permission: manage:roles' })
   create(@Body() dto: CreateRoleDto) {
     return this.rolesService.create(dto);
   }
 
   @Get()
   @RequirePermissions('read:roles')
-  @ApiOperation({ summary: 'List all roles' })
-  @ApiResponse({ status: 200, description: 'List of roles' })
+  @ApiOperation({ summary: 'List roles', description: 'Get all roles with their permissions. Requires `read:roles` permission.' })
+  @ApiResponse({ status: 200, description: 'Array of roles with permissions' })
+  @ApiResponse({ status: 401, description: 'Missing or invalid access token' })
+  @ApiResponse({ status: 403, description: 'Missing required permission: read:roles' })
   findAll() {
     return this.rolesService.findAll();
   }
 
   @Get(':id')
   @RequirePermissions('read:roles')
-  @ApiOperation({ summary: 'Get role by ID' })
+  @ApiOperation({ summary: 'Get role', description: 'Get a single role by ID with its permissions and users. Requires `read:roles` permission.' })
   @ApiResponse({ status: 200, description: 'Role found' })
+  @ApiResponse({ status: 401, description: 'Missing or invalid access token' })
+  @ApiResponse({ status: 403, description: 'Missing required permission: read:roles' })
   @ApiResponse({ status: 404, description: 'Role not found' })
   findOne(@Param('id') id: string) {
     return this.rolesService.findOne(+id);
@@ -48,8 +54,10 @@ export class RolesController {
 
   @Patch(':id')
   @RequirePermissions('update:roles')
-  @ApiOperation({ summary: 'Update role' })
+  @ApiOperation({ summary: 'Update role', description: 'Update role name or description. Requires `update:roles` permission.' })
   @ApiResponse({ status: 200, description: 'Role updated' })
+  @ApiResponse({ status: 401, description: 'Missing or invalid access token' })
+  @ApiResponse({ status: 403, description: 'Missing required permission: update:roles' })
   @ApiResponse({ status: 404, description: 'Role not found' })
   update(@Param('id') id: string, @Body() dto: UpdateRoleDto) {
     return this.rolesService.update(+id, dto);
@@ -57,9 +65,11 @@ export class RolesController {
 
   @Delete(':id')
   @RequirePermissions('delete:roles')
-  @ApiOperation({ summary: 'Delete role' })
+  @ApiOperation({ summary: 'Delete role', description: 'Delete a role. Fails if the role is assigned to any users. Requires `delete:roles` permission.' })
   @ApiResponse({ status: 200, description: 'Role deleted' })
-  @ApiResponse({ status: 400, description: 'Role assigned to users' })
+  @ApiResponse({ status: 400, description: 'Cannot delete role assigned to users' })
+  @ApiResponse({ status: 401, description: 'Missing or invalid access token' })
+  @ApiResponse({ status: 403, description: 'Missing required permission: delete:roles' })
   @ApiResponse({ status: 404, description: 'Role not found' })
   remove(@Param('id') id: string) {
     return this.rolesService.remove(+id);
@@ -67,16 +77,20 @@ export class RolesController {
 
   @Post(':id/permissions')
   @RequirePermissions('manage:permissions')
-  @ApiOperation({ summary: 'Assign permissions to role' })
+  @ApiOperation({ summary: 'Assign permissions to role', description: 'Attach permissions to a role. Requires `manage:permissions` permission.' })
   @ApiResponse({ status: 201, description: 'Permissions assigned' })
+  @ApiResponse({ status: 401, description: 'Missing or invalid access token' })
+  @ApiResponse({ status: 403, description: 'Missing required permission: manage:permissions' })
   assignPermissions(@Param('id') id: string, @Body() body: PermissionIdsDto) {
     return this.rolesService.assignPermissions(+id, body.permissionIds);
   }
 
   @Delete(':id/permissions')
   @RequirePermissions('manage:permissions')
-  @ApiOperation({ summary: 'Remove permissions from role' })
+  @ApiOperation({ summary: 'Remove permissions from role', description: 'Detach permissions from a role. Requires `manage:permissions` permission.' })
   @ApiResponse({ status: 200, description: 'Permissions removed' })
+  @ApiResponse({ status: 401, description: 'Missing or invalid access token' })
+  @ApiResponse({ status: 403, description: 'Missing required permission: manage:permissions' })
   removePermissions(@Param('id') id: string, @Body() body: PermissionIdsDto) {
     return this.rolesService.removePermissions(+id, body.permissionIds);
   }
