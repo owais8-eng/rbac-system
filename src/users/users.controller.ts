@@ -6,7 +6,9 @@ import {
   Delete,
   Body,
   Param,
+  UseInterceptors,
 } from '@nestjs/common';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -33,6 +35,7 @@ export class UsersController {
   }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   @RequirePermissions('read:users')
   @ApiOperation({ summary: 'List users', description: 'Get all active users. Requires `read:users` permission.' })
   @ApiResponse({ status: 200, description: 'Array of users' })
@@ -43,6 +46,7 @@ export class UsersController {
   }
 
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   @RequirePermissions('read:users')
   @ApiOperation({ summary: 'Get user', description: 'Get a single user by ID. Requires `read:users` permission.' })
   @ApiResponse({ status: 200, description: 'User found' })

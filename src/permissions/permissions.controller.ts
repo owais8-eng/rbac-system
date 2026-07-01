@@ -6,7 +6,9 @@ import {
   Delete,
   Body,
   Param,
+  UseInterceptors,
 } from '@nestjs/common';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { PermissionsService } from './permissions.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
@@ -31,6 +33,7 @@ export class PermissionsController {
   }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   @RequirePermissions('read:permissions')
   @ApiOperation({ summary: 'List permissions', description: 'Get all permissions with role usage count. Requires `read:permissions` permission.' })
   @ApiResponse({ status: 200, description: 'Array of permissions' })
@@ -41,6 +44,7 @@ export class PermissionsController {
   }
 
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   @RequirePermissions('read:permissions')
   @ApiOperation({ summary: 'Get permission', description: 'Get a single permission by ID with its roles. Requires `read:permissions` permission.' })
   @ApiResponse({ status: 200, description: 'Permission found' })

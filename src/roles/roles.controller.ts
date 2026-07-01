@@ -6,7 +6,9 @@ import {
   Delete,
   Body,
   Param,
+  UseInterceptors,
 } from '@nestjs/common';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
@@ -32,6 +34,7 @@ export class RolesController {
   }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   @RequirePermissions('read:roles')
   @ApiOperation({ summary: 'List roles', description: 'Get all roles with their permissions. Requires `read:roles` permission.' })
   @ApiResponse({ status: 200, description: 'Array of roles with permissions' })
@@ -42,6 +45,7 @@ export class RolesController {
   }
 
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   @RequirePermissions('read:roles')
   @ApiOperation({ summary: 'Get role', description: 'Get a single role by ID with its permissions and users. Requires `read:roles` permission.' })
   @ApiResponse({ status: 200, description: 'Role found' })
