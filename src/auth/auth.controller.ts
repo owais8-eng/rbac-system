@@ -9,7 +9,7 @@ import { Public } from './public.decorator';
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private readonly authService: AuthService) { }
 
   @Public()
   @Post('login')

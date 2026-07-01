@@ -74,7 +74,7 @@ async function main() {
   }
 
   // Moderator gets user read + all post permissions
-  for (const name of ['read:users', ...['create:posts', 'read:posts', 'update:posts', 'delete:posts']]) {
+  for (const name of ['read:users','create:posts', 'read:posts', 'update:posts', 'delete:posts']) {
     await prisma.role.update({
       where: { id: moderatorRole.id },
       data: { permissions: { connect: { id: createdPerms[name].id } } },
@@ -92,7 +92,7 @@ async function main() {
   // ── Users ─────────────────────────────────────────
   const hashed = await bcrypt.hash('password123', 10);
 
-  const adminUser = await prisma.user.upsert({
+    await prisma.user.upsert({
     where: { email: 'admin@example.com' },
     update: {},
     create: {

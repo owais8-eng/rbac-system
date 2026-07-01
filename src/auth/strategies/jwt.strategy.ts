@@ -7,7 +7,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor(private prisma: PrismaService) {
+    constructor(private readonly prisma: PrismaService) {
         const secret = process.env.JWT_SECRET || 'dev-secret';
         console.log('🔑 Strategy secret:', secret);
         console.log('🔑 Using fallback:', !process.env.JWT_SECRET);

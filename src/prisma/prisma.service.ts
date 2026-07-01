@@ -5,7 +5,7 @@ import { Pool } from 'pg';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
-  private pool: Pool;
+  private readonly pool: Pool;
   private readonly logger = new Logger(PrismaService.name);
 
   constructor() {

@@ -9,7 +9,7 @@ import { AuditService } from './audit.service';
 
 @Injectable()
 export class AuditInterceptor implements NestInterceptor {
-  constructor(private audit: AuditService) { }
+  constructor(private readonly audit: AuditService) { }
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request = context.switchToHttp().getRequest();
@@ -44,7 +44,7 @@ export class AuditInterceptor implements NestInterceptor {
     const parts = url.split('/');
     for (const part of parts) {
       const num = Number(part);
-      if (!isNaN(num)) return num;
+      if (!Number.isNaN(num)) return num;
     }
     return undefined;
   }

@@ -7,8 +7,8 @@ import * as jwt from 'jsonwebtoken';
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
-    private prisma: PrismaService,
+    private readonly usersService: UsersService,
+    private readonly prisma: PrismaService,
   ) { }
 
   async validateUser(email: string, pass: string) {

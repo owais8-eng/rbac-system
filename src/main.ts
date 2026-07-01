@@ -1,14 +1,13 @@
 import 'dotenv/config';
 import compression from 'compression';
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import {
   ValidationPipe,
   ClassSerializerInterceptor,
 } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
 import * as bodyParser from 'body-parser';
 import helmet from 'helmet';
-import { SwaggerModule, DocumentBuilder, ApiBearerAuth } from '@nestjs/swagger';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/http-exception.filter';
 
